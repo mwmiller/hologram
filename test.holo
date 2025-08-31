@@ -1,0 +1,11 @@
+<div key="value">
+{%raw}
+Something
+{/raw}
+{%if @something}
+<a>anchor</a>
+{%else}
+<p>{@something} untrue</p>
+{/if}
+</div>
+
