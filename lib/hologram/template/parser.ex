@@ -856,12 +856,12 @@ defmodule Hologram.Template.Parser do
     add_processed_tag(context, new_tag)
   end
 
-  defp add_processed_tag(%{processed_tags: processed_tags} = context, tag) do
-    %{context | processed_tags: [tag | processed_tags]}
+  defp add_processed_tag(context, tag) do
+    Map.update(context, :processed_tags, [tag], fn prev_tags -> [tag | prev_tags] end)
   end
 
-  defp add_processed_token(%{processed_tokens: processed_tokens} = context, token) do
-    %{context | processed_tokens: [token | processed_tokens]}
+  defp add_processed_token(context, token) do
+    Map.update(context, :processed_tokens, [token], fn prev_tokes -> [token | prev_tokes] end)
   end
 
   defp add_public_comment_end_tag(context) do
