@@ -1650,6 +1650,36 @@ defmodule Hologram.ExJsConsistency.Erlang.ErlangTest do
     end
   end
 
+  describe "bsr/2" do
+    test "shifts positive integer to the right" do
+      assert :erlang.bsr(8, 2) == 2
+    end
+
+    test "shifts negative integer to the right" do
+      assert :erlang.bsr(-8, 2) == -2
+    end
+
+    test "shifts with a shift of 0" do
+      assert :erlang.bsr(8, 0) == 8
+    end
+
+    test "shifts with a large shift value" do
+      assert :erlang.bsr(8, 4) == 0
+    end
+
+    test "raises ArithmeticError if the first argument is not an integer" do
+      assert_error ArithmeticError,
+                   "bad argument in arithmetic expression: Bitwise.bsr(:abc, 2)",
+                   {:erlang, :bsr, [:abc, 2]}
+    end
+
+    test "raises ArithmeticError if the second argument is not an integer" do
+      assert_error ArithmeticError,
+                   "bad argument in arithmetic expression: Bitwise.bsr(8, :abc)",
+                   {:erlang, :bsr, [8, :abc]}
+    end
+  end
+
   describe "byte_size/1" do
     test "empty bitstring" do
       assert :erlang.byte_size("") == 0

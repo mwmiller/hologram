@@ -2201,6 +2201,58 @@ describe("Erlang", () => {
     });
   });
 
+  describe("bsr/2", () => {
+    const bsr = Erlang["bsr/2"];
+
+    it("shifts positive integer to the right", () => {
+      const integer = Type.integer(8);
+      const shift = Type.integer(2);
+      const result = bsr(integer, shift);
+
+      assert.deepStrictEqual(result, Type.integer(2));
+    });
+
+    it("shifts negative integer to the right", () => {
+      const integer = Type.integer(-8);
+      const shift = Type.integer(2);
+      const result = bsr(integer, shift);
+
+      assert.deepStrictEqual(result, Type.integer(-2));
+    });
+
+    it("shifts with a shift of 0", () => {
+      const integer = Type.integer(8);
+      const shift = Type.integer(0);
+      const result = bsr(integer, shift);
+
+      assert.deepStrictEqual(result, Type.integer(8));
+    });
+
+    it("shifts with a large shift value", () => {
+      const integer = Type.integer(8);
+      const shift = Type.integer(4);
+      const result = bsr(integer, shift);
+
+      assert.deepStrictEqual(result, Type.integer(0));
+    });
+
+    it("raises ArithmeticError if the first argument is not an integer", () => {
+      assertBoxedError(
+        () => bsr(Type.atom("abc"), Type.integer(2)),
+        "ArithmeticError",
+        "bad argument in arithmetic expression: bsr(:abc, 2)",
+      );
+    });
+
+    it("raises ArithmeticError if the second argument is not an integer", () => {
+      assertBoxedError(
+        () => bsr(Type.integer(8), Type.atom("abc")),
+        "ArithmeticError",
+        "bad argument in arithmetic expression: bsr(8, :abc)",
+      );
+    });
+  });
+
   describe("byte_size/1", () => {
     const byte_size = Erlang["byte_size/1"];
 
